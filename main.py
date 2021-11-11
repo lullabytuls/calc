@@ -12,7 +12,7 @@ operations=[]
 preop=[]
 prenum=[]
 
-def a(operation,stack,actstack,operations,preop,prenum)
+def a(operation,stack,actstack,operations,preop,prenum):
     n=10    
     i=-1
     j=-1
@@ -55,7 +55,7 @@ def a(operation,stack,actstack,operations,preop,prenum)
         if operations[it]=="(":
             print("a")  """
     
-a(operation)
+a(operation,stack,actstack,operations,preop,prenum)
 """ for i in range(len(preop)):
     if operations[i]!=")":
         continue
@@ -69,9 +69,10 @@ def multiply(result):
 def divide(result):
     result+=stack.pop()/stack.pop()
 def lookfor(o):
+    r=len(o)
     for i in range(len(o)):
         j=i+1
-        while j<range(len(o)):
+        while j<r:
             if o[i]==o[j] and o[i]=="(":
                 noparanthysis=False
                 val=j
@@ -98,7 +99,7 @@ if operations.pop()==")":
                 multiply()
             elif main=="/":
                 divide()
-            if isEmpty(operations)==True:
+            if operations.isEmpty()==True:
                 break
 
     elif noparanthysis==False:
@@ -117,6 +118,8 @@ if operations.pop()==")":
                 divide()
             for i in range(vali-1):
                 operations.pop()
+    
+print(result)
 
 
 
