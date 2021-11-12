@@ -1,125 +1,162 @@
-operation = "(15+11)*(7*3)"
-result=0
-vali=0
-val=None
-ind1=None
-ind2=None
-ind3=None
-noparanthysis=True
 stack=[]
-actstack=[]
-operations=[]
-preop=[]
-prenum=[]
+operators=[]
+final=[]
+index=0
+val=1
+cont=0
+hold=0
+enter=True
+first=True
+stop1=False
+add=False
+result=0
 
-def a(operation,stack,actstack,operations,preop,prenum):
-    n=10    
-    i=-1
-    j=-1
-    length=len(operation)
-    for char in operation:
-        if char in "0123456789":
-            i=i+1;
-            stack.append(int(char))
-            prenum.append(i)
-        elif char in "+-*/()":
-            operations.append(char)
-            i=i+1
-            preop.append(i)
-    print(stack)
-    print(operations)
-    print(prenum)
-    print(preop)
-    s=len(stack)
-    print(stack.pop())
-    print(s)
-    z=0
-    """ 
-    for z in range(s-1):
-        n=10
-        if prenum[z]+1==prenum[z+1]:
-           neu= stack[z]*n+stack[z+1]
-           for z in range(s-1):
-            if prenum[z+1]==prenum[z+2]:
-                neu=neu*10+prenum[z+2]
-           n=n*10
-           actstack.append(neu)
-    print(actstack)
-    print(z)
-    while z<=5:
-        actstack.append(stack[z])
-        z=z+1
-    print(actstack)
-    l=len(operations)
-    for it in range(l):
-        if operations[it]=="(":
-            print("a")  """
-    
-a(operation,stack,actstack,operations,preop,prenum)
-""" for i in range(len(preop)):
-    if operations[i]!=")":
+operation="15+3"
+length=len(operation)
+
+for char in operation: 
+    if index>0 and cont!=index-1 and enter==True:
+        cont+=1
         continue
-    elif operations[i]=")": """
-def add(result):
-    result+=stack.pop()+stack.pop()
-def subtract(result):
-    result-=stack.pop()-stack.pop()
-def multiply(result):
-    result+=stack.pop()*stack.pop()
-def divide(result):
-    result+=stack.pop()/stack.pop()
-def lookfor(o):
-    r=len(o)
-    for i in range(len(o)):
-        j=i+1
-        while j<r:
-            if o[i]==o[j] and o[i]=="(":
-                noparanthysis=False
-                val=j
+    if char in "0123456789":
+        enter=True
+        while index<length-1:
+            str=operation[index+1]
+            if str.isdigit():
+                if first==True:
+                    val=int(operation[index])*10+int(operation[index+1])
+                    first=False
+                elif first==False:
+                    val=val*10+int(operation[index+1])
+            elif index+2==length:
+                first=True
+                final.append(val)
+                val=1
+                index=index+1
                 break
-            elif o[i]==o[j] and o[i]==")":
-                noparanthysis=False
-                vali=vali+1
+            else:
+                first=True
+                final.append(val)
+                val=1
+                index=index+1
+                break
+            index=index+1
+    elif char in "+-*/()":
+        index=index+1
+        enter=False
+        if len(operators)==0:
+            operators.append(char)
+        elif len(operators)>0:
+            r=len(operators)
+            if char=="*" or char=="/":
+                if operators(r-1)=="+" or operators(r-1)=="-" or operator(r-1)=="(":
+                    operators.append(char) 
+                elif operators(r-1)=="*" or operators(r-1)=="/":
+                    i=r-1
+                    while i!=0:
+                        if operators[i]=="*" or operators[i]=="/":
+                            final.append(operators[i])
+                            operators.pop(i)
+                        elif operators[i]=="+" or operators[i]=="-" or operators[i]=="(":
+                            break
+                        i=i-1
+                    operators.append(char)
+            elif char=="+" or char=="-":
+                if operators(r-1)=="+" or operators(r-1)=="-" or operators(r-1)=="(" or operators(r-1)=="*" or operators(r-1)=="/":
+                    i=r-1
+                    while i!=0:
+                        if operators[i]=="+" or operators[i]=="-" or operators[i]=="*" or operators[i]=="/":
+                            final.append(operators[i])
+                            operators.pop(i)
+                        elif operators[i]=="(":
+                            break
+                        i=i-1
+                        operators.append(char)
+            elif char=="(":
+                operators.append(char)
+            elif char==")":
+                i=r-1
+                while i!=-1:
+                    if operators[i]=="(":
+                        hold=i
+                        break
+                    i=i-1
+                i=r-1
+                while i!=hold-1:
+                    if operators[i]!="(":
+                        final.append(operators[i])
+                        operators.pop(i)
+                    elif operators[i]=="(":
+                        operators.pop()
+                    i=i-1
+def add(result,i,j):
+    result+=i+j
+def subtract(result,i,j):
+    result+=i-j
+def multiply(result,i,j):
+    result+=i*j
+def divide(result,i,j):
+    result+=i/j
 
+one=True
+i=0                    
+l=len(final)
+while i<l:
+    if final[i]=="+" or final[i]=="-" or final[i]=="*" or final=="/":
+        main=final[i]
+        if one==True:
+            if main=="+":
+                add(result,final[i-1], final[i-2])
+            elif main=="-":
+                subtract(result,final[i-1], final[i-2])
+            elif main=="*":
+                multiply(result,final[i-1], final[i-2])
+            elif main=="/":
+                divide(result,final[i-1], final[i-2])
+            final[i-1].pop()
+            final[i-2].pop()
+            final[i].pop()
+            one=False
+            j=i-2
+            l=l-3
+            while i!=l-1:
+                final[j]=final[i+1]
+                i+=1
+                j=j+1
+            i=-1
+        elif one==False:
+            if main=="+":
+                add(result,result, final[i-1])
+            elif main=="-":
+                subtract(result,result, final[i-1])
+            elif main=="*":
+                multiply(result,result, final[i-1])
+            elif main=="/":
+                divide(result,result, final[i-1])
+            final(i-1).pop()
+            final(i).pop()
+            j=i-1
+            temp=i
+            l=l-2
+            while i!=l-1:
+                final[j]=final[i+1]
+                i+=1
+                j=j+1
+            i=-1
+    i=i+1
 
+    
 
-
+print(result)
         
 
-if operations.pop()==")":
-    lookfor(operations)
-    if noparanthysis==True:
-        while True:
-            main=operations.pop()
-            if main=="+":
-                add()
-            elif main=="-":
-                subtract()
-            elif main=="*":
-                multiply()
-            elif main=="/":
-                divide()
-            if operations.isEmpty()==True:
-                break
 
-    elif noparanthysis==False:
-        if vali!=0:
-            for i in range(vali):
-                operations.pop()
-        while True:
-            main=operations.pop()
-            if main=="+":
-                add()
-            elif main=="-":
-                subtract()
-            elif main=="*":
-                multiply()
-            elif main=="/":
-                divide()
-            for i in range(vali-1):
-                operations.pop()
-    
-print(result)
+
+
+
+
+
+
 
 
 
