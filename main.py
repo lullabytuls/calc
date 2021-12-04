@@ -1,21 +1,15 @@
-stack=[]
-operators=[]
-final=[]
-includes=False
-index=0
-val=1
-cont=0
-hold=0
-enter=True
-first=True
-finish=True
-stop1=False
-add=False
-result=0
-none=False
-notOp=False
-fattempt=False
-operation="((2+4)*(4/2))"
+
+operators=[] #operatörlerin olduğu stack
+final=[] #son stack
+includes=False #gelen operatörün kendisinden önce parantez içerip içermediğini belirler, içeriyorsa true içermiyorsa false
+index=0 #her karakter atlanıldığında index değerinin artışı burada tutulur, özellikle birden fazla basamaklı sayılar olduğunda kullanışlı
+val=1 #sayılarda işlem kolaylığı için 
+hold=0 #parantezli işlemlerde parantezin bulunduğu yerin indexini tutar
+first=True #bir sayının birden fazla basamaklı olup olmadığını karar vermedeki kontrol değişkeni
+finish=True #işlem sonu, sonuysa operasyondaki tüm operatörler stackten çıkarılır final stackine aktarılır
+result=0 #işlem sonucunun tutulduğu variable
+notOp=False #önceden gelen karakterin/ mevcut karakterde operand olup olmadığını belirtir, final stack'ine atarken yardımcı
+operation="((2+4)*4/2)" #bu tarz işlemlerde sorun var (yanyana birden fazla parantez, içteki parantezin sonuna kadar gidiyor fakat sonrasına devam etmiyor; kodun işleyişinde sorun yok fakat durum bu anlayamadım)
 length=len(operation)
 
 for char in operation:
@@ -24,26 +18,26 @@ for char in operation:
     if char in "0123456789":
         if first==True:
             val=int(char)
-            print(val)
-            first=False
-            notOp=True 
+            print(val) 
+            first=False #sayının ilk rakamı giriş yaptı o nedenle değişken değişti
+            notOp=True #sonraki gelecek eleman  öncekinin op olmadığını bilmeli
         elif first==False:
-            val=val*10+int(char)
+            val=val*10+int(char) #sayı birden fazla basamaklı
             notOp=True
-        if index==length:
-            first=True
+        if index==length: #en son hanede gelen rakam ise
+            first=True 
             final.append(val)
             val=1
     elif char in "+-*/()":
-        if notOp==True:
+        if notOp==True: #önceki gelen elemanı final'e atmak için
             first=True
             final.append(val)
             val=1
-        if len(operators)==0:
+        if len(operators)==0: #0 ise büyüklüğü direkt op final'e atılmalı
             notOp=False
             print("aaaaaa")
             operators.append(char)
-        elif len(operators)>0:
+        elif len(operators)>0: 
             notOp=False
             r=len(operators)
             if char=="*" or char=="/":
@@ -102,7 +96,7 @@ for char in operation:
                         break
                     i=i-1
 
-if finish==True: #op boşaltma
+if finish==True: #op çıkarma
     ran=len(operators)
     for i in range(ran):
         a=operators.pop()
