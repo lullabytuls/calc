@@ -1,1 +1,1 @@
-# calculator-design-with-pyhton-using-stack-
+# calculator-design-with-python-using-stack-
